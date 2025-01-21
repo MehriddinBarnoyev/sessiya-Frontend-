@@ -29,15 +29,14 @@ const answerFeedback = document.getElementById("answerFeedback");
 const correctAnswerElement = document.getElementById("correctAnswer");
 
 // Fetch country data
-async function fetchCountryData() {
+async function getCountryData() {
   try {
-    const response = await fetch("https://restcountries.com/v3.1/all");
-    const data = await response.json();
-    countryData = data.filter(
+    const response = await axios.get("https://restcountries.com/v3.1/all");
+    countryData = response.data.filter(
       (country) => country.capital && country.capital.length > 0
     );
   } catch (error) {
-    console.error("Error fetching country data:", error);
+    console.error("Error getting country data:", error);
   }
 }
 
@@ -134,7 +133,7 @@ function handleAnswer(answer) {
     } else {
       endGame();
     }
-  }, 2000);
+  }, 1000);
 }
 
 function updateResults() {
@@ -192,6 +191,6 @@ restartButton.addEventListener("click", () => {
 startButton.addEventListener("click", startGame);
 
 // Initialize the game
-fetchCountryData().then(() => {
+getCountryData().then(() => {
   loginScreen.classList.remove("hidden");
 });
